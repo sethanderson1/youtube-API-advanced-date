@@ -1,21 +1,158 @@
 * {
   box-sizing: border-box;
+  /* font-family: 'Michroma', sans-serif; */
+
+}
+
+#results {
+    font-family: 'Roboto', sans-serif;
+    display: block;
+    font-size: 1.2rem;
+    margin: 100px 0;
+
+}
+
+li {
+  list-style: none;
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Michroma', sans-serif;
+  /* font-family: "Fira Sans", sans-serif; */
+
+  /* font-family: 'Roboto', sans-serif;} */
 }
 
-button, input[type="text"] {
-  padding: 5px;
+form {
+  max-width: 800px;
+}
+.date-input {
+  display:flex;
+  flex:1;
+  width:100%;
 }
 
-button:hover {
+.main-heading {
+  text-align-last: center;
+  margin: 0 0 40px 0;
+}
+
+.heading-from {
+  margin: 10px 0 0 20px;;
+}
+
+.heading-to {
+  margin: 10px 0 0 20px;;
+}
+
+.from-date-input input {
+  /* text-align: justify; */
+  /* float:right; */
+  /* width:70px; */
+  /* display: flex; */
+  /* flex: 1; */
+  /* width:50%; */
+}
+
+.to-date-input input {
+  /* float:right; */
+  /* clear:both; */
+  /* width:70px; */
+  /* display: flex; */
+  /* flex: 1; */
+  /* width:50%; */
+}
+
+.from-date-input input, .to-date-input input {
+  /* width:200px; */
+  width:70px;
+
+}
+
+.label-input-wrapper {
+  display: block;
+  /* line-height: 40px; */
+  margin:10px;
+  /* vertical-align: middle; */
+}
+
+#js-search-term {
+  width: 550px;
+  text-align: left;
+  padding: 0 0 0 7px;
+}
+
+.js-search-field {
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+
+
+label {
+  /* height:40px; */
+  line-height: 10px;
+  vertical-align: middle;
+  padding:10px;
+  line-height: 40px;
+
+}
+
+
+
+
+
+
+
+input[type="submit"]:hover {
   cursor: pointer;
 }
 
+input[type="number"],input[type="text"] {
+  text-align: center;
+  padding: 0 0px 0 0;
+  float:right;
+  line-height: 40px;
+  font-size: 1.2rem;
+  border: 2px solid lightgray;
+  border-radius: 7px;
+  /* background-color: rgb(197, 197, 197); */
+  /* color:lightgray; */
+}
+
+.max-results-label {
+  float:left;
+}
+
+#js-max-results {
+  float: left;
+  width: 50px;
+}
+
+.submit-button {
+  line-height: 40px;
+  font-size: 1.5rem;
+  /* font-weight: bold; */
+  border: 2px solid lightgray;
+  border-radius: 7px;
+  width: 100px;
+  float:right;
+
+
+}
+
+#results-list li h3 {
+  margin:20px  0 5px 0;
+
+}
+
+#results-list li p {
+  margin:0px  0 5px 0;
+}
+
+
 .container {
-  max-width: 600px;
+  /* max-width: 600px; */
   margin: 0 auto;
 }
 

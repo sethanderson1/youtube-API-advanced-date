@@ -29,7 +29,7 @@ function displayResults(responseJson) {
       `<li><h3>${responseJson.items[i].snippet.title}</h3>
       <p>${responseJson.items[i].snippet.description}</p>
       <a href="https://www.youtube.com/watch?v=${responseJson.items[i].id.videoId}"  target="_blank">
-      <img src='${responseJson.items[i].snippet.thumbnails.default.url}'>
+      <img src='${responseJson.items[i].snippet.thumbnails.high.url}'>
       </a>
       </li>`
     )};
@@ -37,18 +37,18 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 };
 
-function getYouTubeVideos(query, maxResults,fromYear,fromMonth,fromDay){
+function getYouTubeVideos(query, maxResults,fromYear,fromMonth,fromDay,toYear,toMonth,toDay){
   // const fromYear = '2006';
   // const fromMonth = '04';
   // const fromDay = '24';
   //  fromYear = '2006';
   //  fromMonth = '04';
   //  fromDay = '23';
-  const nextDay = (+fromDay+0)+'';
-  const nextMonth = (+fromMonth+1)+'';
-  const toYear = '2005';
-  const toMonth = '12';
-  const toDay = '31';
+  // const nextDay = (+fromDay+0)+'';
+  // const nextMonth = (+fromMonth+1)+'';
+  // const toYear = '2005';
+  // const toMonth = '12';
+  // const toDay = '31';
   const params = {
     key: apiKey,
     q: query,
@@ -57,7 +57,7 @@ function getYouTubeVideos(query, maxResults,fromYear,fromMonth,fromDay){
     type: 'video',
     order: 'date',
     publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
-    publishedBefore:`${fromYear}-${nextMonth}-${nextDay}T05:55:00Z`
+    publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
 
     // publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
     // publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
@@ -132,8 +132,17 @@ function watchForm() {
     const fromYear = $('#js-from-year').val();
     const fromMonth = $('#js-from-month').val();
     const fromDay = $('#js-from-day').val();
-    getYouTubeVideos(searchTerm, maxResults,fromYear,fromMonth,fromDay);
+    const toYear = $('#js-to-year').val();
+    const toMonth = $('#js-to-month').val();
+    const toDay = $('#js-to-day').val();
+    getYouTubeVideos(searchTerm, maxResults,fromYear,fromMonth,fromDay,toYear,toMonth,toDay);
   });
 }
 
 $(watchForm);
+
+
+
+// next steps: to get thumbnails to animate on hover. idk if possible. 
+// and to clean up results section
+// add roboto font to results section

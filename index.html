@@ -1,44 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>YouTube video finder</title>
-    <link rel="shortcut icon" href="#">
-    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>YouTube Date Range Search</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Michroma&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Michroma|Roboto&display=swap" rel="stylesheet" /> -->
+    <!-- <link rel="stylesheet" id="wp-google-fonts-css"
+        href="https://fonts.googleapis.com/css?family=Fira+Sans%3A300%2C400%2C600&amp;ver=5.3.2" type="text/css"
+        media="all" /> -->
+
 </head>
+<style>
+    /* body { font-family: 'Michroma', sans-serif;} */
+</style>
+
 <body>
     <div class="container">
-        <h1>YouTube video finder</h1>
+        <h1 class="main-heading">YouTube Date Range Search</h1>
 
-        <form id="js-form">
-            <label for="from-year">From Year</label>
-            <input type="number" name="from-year" id="js-from-year" value="2005">
+        <form id="js-form" role="form">
+            <div class="label-input-wrapper js-search-field" > 
 
-            <label for="from-year">From Month</label>
-            <input type="number" name="from-year" id="js-from-month" value="04">
+                <label for="search-term" class="js-search-field">Search term</label>
+                <input type="text" name="search-term" id="js-search-term" placeholder="Search"/>
 
-            <label for="from-year">From Day</label>
-            <input type="number" name="from-year" id="js-from-day" >
+            </div>
+            <div class="date-input">
+                <div class="from-date-input">
+                    <h3 class="heading-from">From</h3>
+                    <div class="label-input-wrapper">
+                        <label for="from-year">Year</label>
+                        <input type="number" name="from-year" id="js-from-year" value="2005" />
 
-            <label for="search-term">Search term</label>
-            <input type="text" name="search-term" id="js-search-term" >
+                    </div>
 
-            <label for="max-results">Maximum results to return</label>
-            <input type="number" name="max-results" id="js-max-results" value="10">
+                    <div class="label-input-wrapper">
+                        <label for="from-month">Month</label>
+                        <input type="number" name="from-month" id="js-from-month" value="4" />
 
-            <input type="submit" value="Go!">
+                    </div>
+
+                    <div class="label-input-wrapper">
+                        <label for="from-day">Day</label>
+                        <input type="number" name="from-day" id="js-from-day" value="1" />
+
+                    </div>
+
+                </div>
+                <div class="to-date-input">
+                    <h3 class="heading-to">To</h3>
+                    <div class="label-input-wrapper">
+                        <label for="to-year">Year</label>
+                        <input type="number" name="to-year" id="js-to-year" value="2005" />
+
+                    </div>
+
+                    <div class="label-input-wrapper">
+                        <label for="to-month">Month</label>
+                        <input type="number" name="to-month" id="js-to-month" value="4" />
+
+                    </div>
+
+                    <div class="label-input-wrapper">
+                        <label for="to-day">Day</label>
+                        <input type="number" name="to-day" id="js-to-day" value="1" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="search-submit">
+
+
+                <div class="label-input-wrapper "> 
+
+                    <label for="max-results" class="max-results-label">Maximum results to return</label>
+                    <input type="number" name="max-results" id="js-max-results" value="10" />
+        
+                </div>
+                <div class="label-input-wrapper"> 
+
+                    <input type="submit" class="submit-button" value="Go!" />
+        
+                </div>
+            </div>
+
         </form>
 
         <p id="js-error-message" class="error-message"></p>
         <section id="results" class="hidden">
-          <h2>Search results</h2>
-          <ul id="results-list">
-          </ul>
+            <h2>Search results</h2>
+            <ul id="results-list"></ul>
         </section>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="index.js"></script>
 </body>
+
 </html>
