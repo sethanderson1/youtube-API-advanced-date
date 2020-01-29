@@ -37,12 +37,11 @@ form {
   margin: 0 0 40px 0;
 }
 
-.heading-from {
+.heading-from, .heading-to, .sort-by {
   margin: 10px 0 0 20px;;
 }
 
 .heading-to {
-  margin: 10px 0 0 20px;;
 }
 
 .from-date-input input {
@@ -77,7 +76,7 @@ form {
 }
 
 #js-search-term {
-  width: 550px;
+  width: 100%;
   text-align: left;
   padding: 0 0 0 7px;
 }
@@ -86,6 +85,7 @@ form {
   font-size: 1.5rem;
   font-weight: bolder;
 }
+
 
 
 
@@ -120,8 +120,26 @@ input[type="number"],input[type="text"] {
   /* color:lightgray; */
 }
 
+input[text="radio"] {
+  /* float: left; */
+  /* clear: none; */
+  vertical-align: baseline;
+
+
+
+}
+
+.vert-middle {
+  vertical-align: middle;
+}
+
+
+
+
+
 .max-results-label {
   float:left;
+  font-size: 1.2rem;
 }
 
 #js-max-results {

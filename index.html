@@ -47,7 +47,7 @@
 
                     <div class="label-input-wrapper">
                         <label for="from-day">Day</label>
-                        <input type="number" name="from-day" id="js-from-day" value="1" />
+                        <input type="number" name="from-day" id="js-from-day" value="23" />
 
                     </div>
 
@@ -68,20 +68,43 @@
 
                     <div class="label-input-wrapper">
                         <label for="to-day">Day</label>
-                        <input type="number" name="to-day" id="js-to-day" value="1" />
+                        <input type="number" name="to-day" id="js-to-day" value="24" />
 
                     </div>
 
                 </div>
+                
+                
 
             </div>
+            <div>
+                <div class="sort-by">
+                    <h3>Sort by</h3>
+                    <div class="label-input-wrapper sort-by-wrapper">
+                        <input type="radio" name="sort-by" id="val1" class="vert-middle sort" value="relevance"  />
+                        <label for="val1" class="vert-middle">Relavance</label>
 
-            <div class="search-submit">
+                    </div>
+                    <div class="label-input-wrapper sort-by-wrapper">
+                        <input type="radio" name="sort-by" id="val2" class="vert-middle sort" value="date"  />
+                        <label for="val2" class="vert-middle">Upload Date</label>
+
+                    </div>
+                    <div class="label-input-wrapper sort-by-wrapper">
+                        <input type="radio" name="sort-by" id="val3" class="vert-middle sort" value="viewCount" checked />
+                        <label for="val3" class="vert-middle">View Count</label>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="submit-box">
 
 
                 <div class="label-input-wrapper "> 
 
-                    <label for="max-results" class="max-results-label">Maximum results to return</label>
+                    <label for="max-results" class="max-results-label">max results</label>
                     <input type="number" name="max-results" id="js-max-results" value="10" />
         
                 </div>

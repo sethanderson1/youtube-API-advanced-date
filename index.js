@@ -29,7 +29,7 @@ function displayResults(responseJson) {
       `<li><h3>${responseJson.items[i].snippet.title}</h3>
       <p>${responseJson.items[i].snippet.description}</p>
       <a href="https://www.youtube.com/watch?v=${responseJson.items[i].id.videoId}"  target="_blank">
-      <img src='${responseJson.items[i].snippet.thumbnails.high.url}'>
+      <img src='${responseJson.items[i].snippet.thumbnails.medium.url}'>
       </a>
       </li>`
     )};
@@ -37,7 +37,7 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 };
 
-function getYouTubeVideos(query, maxResults,fromYear,fromMonth,fromDay,toYear,toMonth,toDay){
+function getYouTubeVideos(query, maxResults,order,fromYear,fromMonth,fromDay,toYear,toMonth,toDay){
   // const fromYear = '2006';
   // const fromMonth = '04';
   // const fromDay = '24';
@@ -49,13 +49,16 @@ function getYouTubeVideos(query, maxResults,fromYear,fromMonth,fromDay,toYear,to
   // const toYear = '2005';
   // const toMonth = '12';
   // const toDay = '31';
+// order = 
+  console.log('order ',order)
   const params = {
     key: apiKey,
     q: query,
     part: 'snippet',
     maxResults,
     type: 'video',
-    order: 'date',
+    // order: 'date',
+    order,
     publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
     publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
 
@@ -135,7 +138,9 @@ function watchForm() {
     const toYear = $('#js-to-year').val();
     const toMonth = $('#js-to-month').val();
     const toDay = $('#js-to-day').val();
-    getYouTubeVideos(searchTerm, maxResults,fromYear,fromMonth,fromDay,toYear,toMonth,toDay);
+    const order = $('input:checked').val();
+    console.log($('.sort-by').val())
+    getYouTubeVideos(searchTerm, maxResults,order,fromYear,fromMonth,fromDay,toYear,toMonth,toDay);
   });
 }
 
