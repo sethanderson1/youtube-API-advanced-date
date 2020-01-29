@@ -139,7 +139,7 @@ function watchForm() {
     const toMonth = $('#js-to-month').val();
     const toDay = $('#js-to-day').val();
     const order = $('input:checked').val();
-    console.log($('.sort-by').val())
+    console.log($('input:checked').val())
     getYouTubeVideos(searchTerm, maxResults,order,fromYear,fromMonth,fromDay,toYear,toMonth,toDay);
   });
 }
