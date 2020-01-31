@@ -1,52 +1,66 @@
-'use strict';
+"use strict";
 
+const STORE = {
+  artistQueryResponse: "",
+  albumsQueryResponse: "",
+
+};
 // put your own value below!
 // const apiKey = 'AIzaSyCsxk-3l3HMjN4zZFQoOHpMj65lyEA8NW0'; //mine
 // const apiKey= "AIzaSyB3hw6YJqtiQRs1X5pNsmqWisgoifViVKE";
 
-const apiKey = 'AIzaSyDXpwzqSs41Kp9IZj49efV3CSrVxUDAwS0';
-const searchURL = 'https://www.googleapis.com/youtube/v3/search';
-
+const apiKey = "AIzaSyDXpwzqSs41Kp9IZj49efV3CSrVxUDAwS0";
+const searchURL = "https://www.googleapis.com/youtube/v3/search";
 
 // publishedAfter=2020-01-24T05:55:00Z
 
-
 const audioDbURL = `https://theaudiodb.com/api/v1/json/1/searchalbum.php?s=the_black_keys`;
-console.log(audioDbURL)
-
+console.log(audioDbURL);
 
 function formatQueryParams(params) {
-  const queryItems = Object.keys(params)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
-    console.log('queryItems ', queryItems);
-  return queryItems.join('&');
+  const queryItems = Object.keys(params).map(
+    key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+  );
+  console.log("queryItems ", queryItems);
+  return queryItems.join("&");
 }
 
 function displayResults(responseJson) {
   // if there are previous results, remove them
   console.log(responseJson);
-  $('#results-list').empty();
+  $("#results-list").empty();
   // iterate through the items array
-  for (let i = 0; i < responseJson.items.length; i++){
-    // for each video object in the items 
-    //array, add a list item to the results 
+  for (let i = 0; i < responseJson.items.length; i++) {
+    // for each video object in the items
+    //array, add a list item to the results
     //list with the video title, description,
     //and thumbnail
-    $('#results-list').append(
+    $("#results-list").append(
       `<li><h3>${responseJson.items[i].snippet.title}</h3>
       <p>${responseJson.items[i].snippet.description}</p>
       <a href="https://www.youtube.com/watch?v=${responseJson.items[i].id.videoId}"  target="_blank">
       <img src='${responseJson.items[i].snippet.thumbnails.medium.url}'>
       </a>
       </li>`
-    )};
-  //display the results section  
-  $('#results').removeClass('hidden');
-};
+    );
+  }
+  //display the results section
+  $("#results").removeClass("hidden");
+}
 
-
-function getYouTubeVideos(query, maxResults,order,
-  fromYear,fromMonth,fromDay,fromHour,toYear,toMonth,toDay,toHour){
+function getYouTubeVideos(
+  query,
+  maxResults,
+  order,
+  fromYear,
+  fromMonth,
+  fromDay,
+  fromHour,
+  toYear,
+  toMonth,
+  toDay,
+  toHour
+) {
   // const fromYear = '2006';
   // const fromMonth = '04';
   // const fromDay = '24';
@@ -58,18 +72,18 @@ function getYouTubeVideos(query, maxResults,order,
   // const toYear = '2005';
   // const toMonth = '12';
   // const toDay = '31';
-// order = 
-  console.log('order ',order)
+  // order =
+  console.log("order ", order);
   const params = {
     key: apiKey,
     q: query,
-    part: 'snippet',
+    part: "snippet",
     maxResults,
-    type: 'video',
+    type: "video",
     // order: 'date',
     order,
-    publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T${fromHour}:00:00Z`,
-    publishedBefore:`${toYear}-${toMonth}-${toDay}T${toHour}:00:00Z`
+    publishedAfter: `${fromYear}-${fromMonth}-${fromDay}T${fromHour}:00:00Z`,
+    publishedBefore: `${toYear}-${toMonth}-${toDay}T${toHour}:00:00Z`
 
     // publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
     // publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
@@ -78,8 +92,8 @@ function getYouTubeVideos(query, maxResults,order,
     // publishedBefore:'2005-06-25T05:55:00Z'
     // publishedBefore or after ? is this possible lets find out
   };
-  const queryString = formatQueryParams(params)
-  const url = searchURL + '?' + queryString;
+  const queryString = formatQueryParams(params);
+  const url = searchURL + "?" + queryString;
 
   console.log(url);
 
@@ -92,10 +106,9 @@ function getYouTubeVideos(query, maxResults,order,
     })
     .then(responseJson => displayResults(responseJson))
     .catch(err => {
-      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+      $("#js-error-message").text(`Something went wrong: ${err.message}`);
     });
 }
-
 
 // function getYouTubeVideos(query, maxResults=10) {
 //   const fromYear = '2005';
@@ -137,54 +150,155 @@ function getYouTubeVideos(query, maxResults,order,
 // }
 
 function watchForm() {
-  $('form').submit(event => {
+  $("form").submit(event => {
     event.preventDefault();
-    const searchTerm = $('#js-search-term').val();
-    const maxResults = $('#js-max-results').val();
-    const fromYear = $('#js-from-year').val();
-    const fromMonth = $('#js-from-month').val();
-    const fromDay = $('#js-from-day').val();
-    const fromHour = $('#js-from-hour').val();
+    const searchTerm = $("#js-search-term").val();
+    const maxResults = $("#js-max-results").val();
+    const fromYear = $("#js-from-year").val();
+    const fromMonth = $("#js-from-month").val();
+    const fromDay = $("#js-from-day").val();
+    const fromHour = $("#js-from-hour").val();
 
-    const toYear = $('#js-to-year').val();
-    const toMonth = $('#js-to-month').val();
-    const toDay = $('#js-to-day').val();
-    const toHour = $('#js-to-hour').val();
-
-    // const fromDay = $('#js-from-day').val();
-    // const fromDay = $('#js-from-day').val();
+    const toYear = $("#js-to-year").val();
+    const toMonth = $("#js-to-month").val();
+    const toDay = $("#js-to-day").val();
+    const toHour = $("#js-to-hour").val();
 
     // const fromDay = $('#js-from-day').val();
     // const fromDay = $('#js-from-day').val();
 
-    const order = $('input:checked').val();
-    console.log($('input:checked').val())
-    getYouTubeVideos(searchTerm, maxResults,order,
-      fromYear,fromMonth,fromDay,fromHour,toYear,toMonth,toDay,toHour);
+    // const fromDay = $('#js-from-day').val();
+    // const fromDay = $('#js-from-day').val();
+
+    const order = $("input:checked").val();
+    console.log($("input:checked").val());
+    getYouTubeVideos(
+      searchTerm,
+      maxResults,
+      order,
+      fromYear,
+      fromMonth,
+      fromDay,
+      fromHour,
+      toYear,
+      toMonth,
+      toDay,
+      toHour
+    );
   });
 }
 
 $(watchForm);
 
+getArtistListFromQuery();
 
-getAlbumsFromArtist();
+function getArtistListFromQuery(artist = "beck") {
+  const url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json`;
+  console.log("query artist url ", url);
+
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        console.log(response);
+        return response.json();
+        // return response;
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => {
+      console.log(responseJson);
+
+      STORE.artistQueryResponse = responseJson;
+      displayArtistList();
+
+      // ** have to move this into handleChooseArtist function later
+      getAlbumsFromArtistID("309c62ba-7a22-4277-9f67-4a162526d18a");
+    })
+
+    .catch(err => {
+      $("#js-error-message").text(`Something went wrong: ${err.message}`);
+    });
+}
+
+function displayArtistList() {
+  console.log(STORE.artistQueryResponse.artists.length);
+  const artists = STORE.artistQueryResponse.artists;
+  // populate list of artists to choose from 
+  for (let i = 0; i < artists.length; i++) {
+    console.log(artists[i].name);
+  }
+
+
+}
+
+
+
+
+// then, upon clicking the desired artist, another 
+// fetch request back to the server using that artist's
+// id to get back the album data for that artist
+
+function getAlbumsFromArtistID(artistID = "309c62ba-7a22-4277-9f67-4a162526d18a") {
+  const url = `https://musicbrainz.org/ws/2/release-group?artist=${artistID}&type=album&fmt=json`;
+  console.log("query albums url ", url);
+
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        console.log(response);
+        return response.json();
+        // return response;
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => {
+      console.log(responseJson);
+
+      STORE.albumsQueryResponse = responseJson;
+      displayAlbumsList();
+    })
+
+    .catch(err => {
+      $("#js-error-message").text(`Something went wrong: ${err.message}`);
+    });
+}
+
+
+function displayAlbumsList() {
+  // console.log(STORE.artistQueryResponse.artists.length);
+  const albums = STORE.albumsQueryResponse["release-groups"];
+  console.log(albums)
+  // populate list of albums to choose from 
+  for (let i = 0; i < albums.length; i++) {
+    console.log(albums[i]);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+// getAlbumsFromArtist();
 function getAlbumsFromArtist() {
-
   // const url = `https://theaudiodb.com/api/v1/json/1/searchalbum.php?s=the_black_keys`;
   // const url = `https://musicbrainz.org/ws/2/release-group?artist=410c9baf-5469-44f6-9852-826524b80c61&type=album|ep&fmt=json`;
   const url = `https://musicbrainz.org/ws/2/`;
 
   console.log(url);
 
-
-
   // .then(response => response.text())
   // .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
   // .then(data => console.log(data))
 
-  fetch(url).then(response => {
+  fetch(url)
+    .then(response => {
       if (response.ok) {
-        console.log(response) 
+        console.log(response);
         return response.json();
         // return response;
       }
@@ -192,12 +306,10 @@ function getAlbumsFromArtist() {
     })
     .then(responseJson => console.log(responseJson))
     .catch(err => {
-      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+      $("#js-error-message").text(`Something went wrong: ${err.message}`);
     });
 }
 
-
-
-// next steps: to get thumbnails to animate on hover. idk if possible. 
+// next steps: to get thumbnails to animate on hover. idk if possible.
 // and to clean up results section
 // add roboto font to results section
