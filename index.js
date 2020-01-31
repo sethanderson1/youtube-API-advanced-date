@@ -1,12 +1,19 @@
 'use strict';
 
 // put your own value below!
-// const apiKey = 'AIzaSyCsxk-3l3HMjN4zZFQoOHpMj65lyEA8NW0'; 
+// const apiKey = 'AIzaSyCsxk-3l3HMjN4zZFQoOHpMj65lyEA8NW0'; //mine
+// const apiKey= "AIzaSyB3hw6YJqtiQRs1X5pNsmqWisgoifViVKE";
+
 const apiKey = 'AIzaSyDXpwzqSs41Kp9IZj49efV3CSrVxUDAwS0';
 const searchURL = 'https://www.googleapis.com/youtube/v3/search';
 
 
 // publishedAfter=2020-01-24T05:55:00Z
+
+
+const audioDbURL = `https://theaudiodb.com/api/v1/json/1/searchalbum.php?s=the_black_keys`;
+console.log(audioDbURL)
+
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
@@ -37,7 +44,9 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 };
 
-function getYouTubeVideos(query, maxResults,order,fromYear,fromMonth,fromDay,toYear,toMonth,toDay){
+
+function getYouTubeVideos(query, maxResults,order,
+  fromYear,fromMonth,fromDay,fromHour,toYear,toMonth,toDay,toHour){
   // const fromYear = '2006';
   // const fromMonth = '04';
   // const fromDay = '24';
@@ -59,8 +68,8 @@ function getYouTubeVideos(query, maxResults,order,fromYear,fromMonth,fromDay,toY
     type: 'video',
     // order: 'date',
     order,
-    publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
-    publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
+    publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T${fromHour}:00:00Z`,
+    publishedBefore:`${toYear}-${toMonth}-${toDay}T${toHour}:00:00Z`
 
     // publishedAfter:`${fromYear}-${fromMonth}-${fromDay}T05:55:00Z`,
     // publishedBefore:`${toYear}-${toMonth}-${toDay}T05:55:00Z`
@@ -135,16 +144,57 @@ function watchForm() {
     const fromYear = $('#js-from-year').val();
     const fromMonth = $('#js-from-month').val();
     const fromDay = $('#js-from-day').val();
+    const fromHour = $('#js-from-hour').val();
+
     const toYear = $('#js-to-year').val();
     const toMonth = $('#js-to-month').val();
     const toDay = $('#js-to-day').val();
+    const toHour = $('#js-to-hour').val();
+
+    // const fromDay = $('#js-from-day').val();
+    // const fromDay = $('#js-from-day').val();
+
+    // const fromDay = $('#js-from-day').val();
+    // const fromDay = $('#js-from-day').val();
+
     const order = $('input:checked').val();
     console.log($('input:checked').val())
-    getYouTubeVideos(searchTerm, maxResults,order,fromYear,fromMonth,fromDay,toYear,toMonth,toDay);
+    getYouTubeVideos(searchTerm, maxResults,order,
+      fromYear,fromMonth,fromDay,fromHour,toYear,toMonth,toDay,toHour);
   });
 }
 
 $(watchForm);
+
+
+getAlbumsFromArtist();
+function getAlbumsFromArtist() {
+
+  // const url = `https://theaudiodb.com/api/v1/json/1/searchalbum.php?s=the_black_keys`;
+  // const url = `https://musicbrainz.org/ws/2/release-group?artist=410c9baf-5469-44f6-9852-826524b80c61&type=album|ep&fmt=json`;
+  const url = `https://musicbrainz.org/ws/2/`;
+
+  console.log(url);
+
+
+
+  // .then(response => response.text())
+  // .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+  // .then(data => console.log(data))
+
+  fetch(url).then(response => {
+      if (response.ok) {
+        console.log(response) 
+        return response.json();
+        // return response;
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => console.log(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
 
 
 

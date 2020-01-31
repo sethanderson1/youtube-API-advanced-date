@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>YouTube Date Range Search</title>
+    <title>Youtube-guitar-lesson-finder</title>
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="main.css" />
     <link href="https://fonts.googleapis.com/css?family=Michroma&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 
 <body>
     <div class="container">
-        <h1 class="main-heading">YouTube Date Range Search</h1>
+        <h1 class="main-heading">YouTube Guitar Lesson Finder</h1>
 
         <form id="js-form" role="form">
             <div class="label-input-wrapper js-search-field" > 
@@ -50,6 +50,11 @@
                         <input type="number" name="from-day" id="js-from-day" value="23" />
 
                     </div>
+                    <div class="label-input-wrapper">
+                        <label for="from-hour">Hour</label>
+                        <input type="number" name="from-hour" id="js-from-hour" value="0" />
+
+                    </div>
 
                 </div>
                 <div class="to-date-input">
@@ -69,6 +74,11 @@
                     <div class="label-input-wrapper">
                         <label for="to-day">Day</label>
                         <input type="number" name="to-day" id="js-to-day" value="24" />
+
+                    </div>
+                    <div class="label-input-wrapper">
+                        <label for="to-hour">Hour</label>
+                        <input type="number" name="to-hour" id="js-to-hour" value="0" />
 
                     </div>
 
