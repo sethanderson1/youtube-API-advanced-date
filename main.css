@@ -9,7 +9,6 @@
     display: block;
     font-size: 1.2rem;
     margin: 100px 0;
-
 }
 
 li {
@@ -19,17 +18,11 @@ li {
 body {
   font-family: 'Michroma', sans-serif;
   /* font-family: "Fira Sans", sans-serif; */
-
   /* font-family: 'Roboto', sans-serif;} */
 }
 
 form {
   max-width: 800px;
-}
-.date-input {
-  display:flex;
-  flex:1;
-  width:100%;
 }
 
 .main-heading {
@@ -37,71 +30,15 @@ form {
   margin: 0 0 40px 0;
 }
 
-.heading-from, .heading-to, .sort-by {
-  margin: 10px 0 0 20px;;
+
+.search-container {
+  text-align: center;
 }
 
-.heading-to {
-}
-
-.from-date-input input {
-  /* text-align: justify; */
-  /* float:right; */
-  /* width:70px; */
-  /* display: flex; */
-  /* flex: 1; */
-  /* width:50%; */
-}
-
-.to-date-input input {
-  /* float:right; */
-  /* clear:both; */
-  /* width:70px; */
-  /* display: flex; */
-  /* flex: 1; */
-  /* width:50%; */
-}
-
-.from-date-input input, .to-date-input input {
-  /* width:200px; */
-  width:70px;
-
-}
-
-.label-input-wrapper {
-  display: block;
-  /* line-height: 40px; */
-  margin:10px;
-  /* vertical-align: middle; */
-}
-
-#js-search-term {
-  width: 100%;
+input.search-field {
   text-align: left;
-  padding: 0 0 0 7px;
+  /* padding: 0 0 0 7px; */
 }
-
-.js-search-field {
-  font-size: 1.5rem;
-  font-weight: bolder;
-}
-
-
-
-
-label {
-  /* height:40px; */
-  line-height: 10px;
-  vertical-align: middle;
-  padding:10px;
-  line-height: 40px;
-
-}
-
-
-
-
-
 
 
 input[type="submit"]:hover {
@@ -109,55 +46,23 @@ input[type="submit"]:hover {
 }
 
 input[type="number"],input[type="text"] {
-  text-align: center;
-  padding: 0 0px 0 0;
-  float:right;
-  line-height: 40px;
+  padding: 0 0 0 5px;
+  line-height: 43px;
   font-size: 1.2rem;
   border: 2px solid lightgray;
-  border-radius: 7px;
+  border-radius: 4px;
   /* background-color: rgb(197, 197, 197); */
   /* color:lightgray; */
 }
 
-input[text="radio"] {
-  /* float: left; */
-  /* clear: none; */
-  vertical-align: baseline;
-
-
-
-}
-
-.vert-middle {
-  vertical-align: middle;
-  padding: 0;
-}
-
-
-.sort-by-wrapper {
-  margin:0;
-}
-
-
-.max-results-label {
-  float:left;
-  font-size: 1.2rem;
-}
-
-#js-max-results {
-  float: left;
-  width: 50px;
-}
 
 .submit-button {
   line-height: 40px;
   font-size: 1.5rem;
-  /* font-weight: bold; */
   border: 2px solid lightgray;
-  border-radius: 7px;
+  border-radius: 4px;
   width: 100px;
-  float:right;
+  /* float:right; */
 
 
 }
@@ -172,10 +77,9 @@ input[text="radio"] {
 }
 
 
-.container {
-  /* max-width: 600px; */
+/* .container {
   margin: 0 auto;
-}
+} */
 
 .error-message {
     color: red;

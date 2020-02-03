@@ -192,7 +192,7 @@ $(watchForm);
 
 getArtistListFromQuery();
 
-function getArtistListFromQuery(artist = "beck") {
+function getArtistListFromQuery(artist = "the_beatles") {
   const url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json`;
   console.log("query artist url ", url);
 
@@ -212,7 +212,7 @@ function getArtistListFromQuery(artist = "beck") {
       displayArtistList();
 
       // ** have to move this into handleChooseArtist function later
-      getAlbumsFromArtistID("309c62ba-7a22-4277-9f67-4a162526d18a");
+      getAlbumsFromArtistID("b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d");
     })
 
     .catch(err => {
@@ -237,9 +237,46 @@ function displayArtistList() {
 // then, upon clicking the desired artist, another 
 // fetch request back to the server using that artist's
 // id to get back the album data for that artist
+// ** improvements: make sure to get all albums
+// and maybe sort by date... and get album art
+// 
 
-function getAlbumsFromArtistID(artistID = "309c62ba-7a22-4277-9f67-4a162526d18a") {
-  const url = `https://musicbrainz.org/ws/2/release-group?artist=${artistID}&type=album&fmt=json`;
+function getAlbumsFromArtistID(artistID = "b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d") {
+  // const url = `https://musicbrainz.org/ws/2/release-group?artist=${artistID}&type=album&fmt=json`;
+  // const url = `https://musicbrainz.org/ws/2/release-group?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&type=album|ep&limit=100&fmt=json`
+  // const url = `http://musicbrainz.org/ws/2/artist/a74b1b7f-71a5-4011-9441-d0b5e4122711?inc=release-groups&fmt=json`
+
+
+  // const url = `https://musicbrainz.org/ws/2/release-group?query=arid:494e8d09-f85b-4543-892f-a5096aed1cd4&fmt=json`
+  // const url =`https://musicbrainz.org/ws/2/release?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json&inc=release-groups&limit=100`
+  // const url =`https://musicbrainz.org/ws/2/release?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json&inc=release-groups&limit=100`
+  // const url =`https://musicbrainz.org/ws/2/release?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json&inc=release-groups&limit=100`
+  // const url =`https://musicbrainz.org/ws/2/release?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json&inc=release-groups&limit=100`
+  // const url =`http://musicbrainz.org/ws/2/release-group?query=arid:b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json`
+  // const url =`http://musicbrainz.org/ws/2/release-group?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json`
+
+  // this is the best version for finding most albums in correct order but excludes soundtracks
+  const url = `http://musicbrainz.org/ws/2/artist/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d?inc=release-groups&fmt=json`
+
+  
+
+  // const url = `http://musicbrainz.org/ws/2/artist/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d?inc=release-groups&primarytype:soundtrack&fmt=json`
+
+  // this only returns soundtracks... it should return both soundtracks and albums
+  // const url = `http://musicbrainz.org/ws/2/artist/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d?inc=release-groups&type=soundtrack|album&fmt=json`
+
+  // const url = `http://musicbrainz.org/ws/2/artist/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d?inc=release-groups&fmt=json`
+  // const url = `https://musicbrainz.org/ws/2/release?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json&inc=release-groups`
+  // const url = `https://musicbrainz.org/ws/2/release-group?artist=b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d&fmt=json`
+
+
+
+  // lets find how to get tracks from album
+
+
+  // lets find how to query certain album 
+
+
   console.log("query albums url ", url);
 
   fetch(url)
@@ -256,6 +293,8 @@ function getAlbumsFromArtistID(artistID = "309c62ba-7a22-4277-9f67-4a162526d18a"
 
       STORE.albumsQueryResponse = responseJson;
       displayAlbumsList();
+
+      getTracksFromAlbumID();
     })
 
     .catch(err => {
@@ -267,33 +306,43 @@ function getAlbumsFromArtistID(artistID = "309c62ba-7a22-4277-9f67-4a162526d18a"
 function displayAlbumsList() {
   // console.log(STORE.artistQueryResponse.artists.length);
   const albums = STORE.albumsQueryResponse["release-groups"];
+  // const albums = STORE.albumsQueryResponse["releases"];
   console.log(albums)
   // populate list of albums to choose from 
   for (let i = 0; i < albums.length; i++) {
-    console.log(albums[i]);
+    console.log(i + ' ' + albums[i].title);
   }
 }
 
 
 
 
+// then get tracks from album ID
+
+
+function getTracksFromAlbumID(albumID = "72d15666-99a7-321e-b1f3-a3f8c09dff9f") {
+  // const url = `https://musicbrainz.org/ws/2/release-group?artist=${albumID}&type=album&fmt=json`;
+  // const url = `https://musicbrainz.org/ws/2/release-group/9f7a4c28-8fa2-3113-929c-c47a9f7982c3?inc=release&fmt=json`
+  // const url = `https://musicbrainz.org/ws/2/release-group/9f7a4c28-8fa2-3113-929c-c47a9f7982c3`
+
+  // const url = `https://musicbrainz.org/ws/2/release-group/9f7a4c28-8fa2-3113-929c-c47a9f7982c3`
+  // const url = `https://musicbrainz.org/ws/2/release-group/9f7a4c28-8fa2-3113-929c-c47a9f7982c3`
+  // const url = `https://musicbrainz.org/ws/2/release/26d5e76b-1640-3883-887b-507e3a287116`
+
+
+  // const url = `http://musicbrainz.org/ws/2/release-group/9f7a4c28-8fa2-3113-929c-c47a9f7982c3&inc=tracks`
+  
+  // const url = `https://musicbrainz.org/ws/1/release/9f7a4c28-8fa2-3113-929c-c47a9f7982c3?type=xml&inc=tracks`
+
+  // const url = `https://musicbrainz.org/ws/2/recording/ba0aff15-7701-4c77-a6cd-6e0b151801c6?inc=releases+release-groups&fmt=json`
+  const url = `https://musicbrainz.org/ws/2/recording/?query=isrc:GBAHT1600302`
 
 
 
 
 
 
-// getAlbumsFromArtist();
-function getAlbumsFromArtist() {
-  // const url = `https://theaudiodb.com/api/v1/json/1/searchalbum.php?s=the_black_keys`;
-  // const url = `https://musicbrainz.org/ws/2/release-group?artist=410c9baf-5469-44f6-9852-826524b80c61&type=album|ep&fmt=json`;
-  const url = `https://musicbrainz.org/ws/2/`;
-
-  console.log(url);
-
-  // .then(response => response.text())
-  // .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
-  // .then(data => console.log(data))
+  console.log("query tracks url ", url);
 
   fetch(url)
     .then(response => {
@@ -304,12 +353,36 @@ function getAlbumsFromArtist() {
       }
       throw new Error(response.statusText);
     })
-    .then(responseJson => console.log(responseJson))
+    .then(responseJson => {
+      console.log(responseJson);
+
+      STORE.tracksQueryResponse = responseJson;
+      // displayTracksList();
+
+
+      // ** have to move this into handleChooseArtist function later
+      getTracksFromAlbumID("b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d");
+    })
+
     .catch(err => {
       $("#js-error-message").text(`Something went wrong: ${err.message}`);
     });
 }
 
-// next steps: to get thumbnails to animate on hover. idk if possible.
-// and to clean up results section
-// add roboto font to results section
+
+
+
+
+// function displayTracksList() {
+//   const tracks = STORE.tracksQueryResponse["release-groups"];
+//   console.log(tracks)
+//   // populate list of albums to choose from 
+//   for (let i = 0; i < tracks.length; i++) {
+//     console.log(i + ' ' + tracks[i].title);
+//   }
+// }
+
+
+
+
+
