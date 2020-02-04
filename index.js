@@ -6,81 +6,14 @@ const STORE = {
   releasesQueryResponse: ``,
   tracksQueryResponse: "",
 };
+
+const baseURL = `https://musicbrainz.org/ws/2/`
 // put your own value below!
 // const apiKey = 'AIzaSyCsxk-3l3HMjN4zZFQoOHpMj65lyEA8NW0'; //mine
 // const apiKey= "AIzaSyB3hw6YJqtiQRs1X5pNsmqWisgoifViVKE";
 const apiKey = "AIzaSyDXpwzqSs41Kp9IZj49efV3CSrVxUDAwS0";
 const searchURL = "https://www.googleapis.com/youtube/v3/search";
 
-function formatQueryParams(params) {
-  const queryItems = Object.keys(params).map(
-    key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
-  );
-  console.log("queryItems ", queryItems);
-  return queryItems.join("&");
-}
-
-function displayResults(responseJson) {
-  // if there are previous results, remove them
-  console.log(responseJson);
-  $("#results-list").empty();
-  // iterate through the items array
-  for (let i = 0; i < responseJson.items.length; i++) {
-
-    $("#results-list").append(
-      `<li><h3>${responseJson.items[i].snippet.title}</h3>
-      <p>${responseJson.items[i].snippet.description}</p>
-      <a href="https://www.youtube.com/watch?v=${responseJson.items[i].id.videoId}"  target="_blank">
-      <img src='${responseJson.items[i].snippet.thumbnails.medium.url}'>
-      </a>
-      </li>`
-    );
-  }
-  //display the results section
-  $("#results").removeClass("hidden");
-}
-
-function getYouTubeVideos(
-  query,
-  maxResults,
-  order,
-) {
-}
-
-// function watchForm() {
-//   $("form").submit(event => {
-//     event.preventDefault();
-//     const searchTerm = $("#js-search-term").val();
-//     const maxResults = $("#js-max-results").val();
-//     const fromYear = $("#js-from-year").val();
-//     const fromMonth = $("#js-from-month").val();
-//     const fromDay = $("#js-from-day").val();
-//     const fromHour = $("#js-from-hour").val();
-
-//     const toYear = $("#js-to-year").val();
-//     const toMonth = $("#js-to-month").val();
-//     const toDay = $("#js-to-day").val();
-//     const toHour = $("#js-to-hour").val();
-
-//     const order = $("input:checked").val();
-//     console.log($("input:checked").val());
-//     getYouTubeVideos(
-//       searchTerm,
-//       maxResults,
-//       order,
-//       fromYear,
-//       fromMonth,
-//       fromDay,
-//       fromHour,
-//       toYear,
-//       toMonth,
-//       toDay,
-//       toHour
-//     );
-//   });
-// }
-
-// $(watchForm);
 
 
 
@@ -125,13 +58,8 @@ function getYouTubeVideos(
 
 
 
-
-
-
-getArtistListFromQuery();
 
 function getArtistListFromQuery(artist = "the%20beatles") {
-
   const url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json`;
   console.log("query artist url ", url);
 
@@ -148,25 +76,47 @@ function getArtistListFromQuery(artist = "the%20beatles") {
       STORE.artistQueryResponse = responseJson;
       displayArtistList();
       // ** move handlers to watchform() thing
-      handleSelectArtist();
+      // handleSelectArtist();
     })
     .catch(err => {
       $("#js-error-message").text(`Something went wrong: ${err.message}`);
     });
 }
 
+
 function displayArtistList() {
+  $(".artists-list").empty();
+
   console.log(STORE.artistQueryResponse.artists.length);
   const artists = STORE.artistQueryResponse.artists;
+  console.log(artists.length)
+  // const url = get request for artist id
   // populate list of artists to choose from 
   for (let i = 0; i < artists.length; i++) {
     console.log(artists[i].name);
+    $(".artists-list").append(
+      `<li>
+      <p id=${artists[i].id}>${artists[i].name}</p>
+      </li>`
+    );
+
+    // <a href=${baseURL}artist/${artists[i].id}?inc=release-groups&fmt=json >
+
   }
+  $("#results").removeClass("hidden");
 }
 
 function handleSelectArtist() {
+  $('.artists-list').on('click',function(event) {
+    event.preventDefault();
+    // grab the element that was clicked
+    console.log('event target: clicked',$(event.target).attr('id'))
+    getReleaseGroupsFromArtistID($(event.target).attr('id'));
+    console.log('selected Artist ', $(event.target).text())
+    STORE.selectedArtist = $(event.target).text();
+    $('.artists-list').addClass('hidden')
+  })
   // gets release groups (basically release group is an album)
-  getReleaseGroupsFromArtistID("b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d");
 }
 
 function getReleaseGroupsFromArtistID(artistID) {
@@ -175,10 +125,7 @@ function getReleaseGroupsFromArtistID(artistID) {
   const recordingID = ``
   const type = ``
 
-  const baseURL = `https://musicbrainz.org/ws/2/`
   const url = `http://musicbrainz.org/ws/2/artist/${artistID}?inc=release-groups&fmt=json`
-
-
 
   console.log("query release groups url ", url);
 
@@ -187,7 +134,6 @@ function getReleaseGroupsFromArtistID(artistID) {
       if (response.ok) {
         console.log(response);
         return response.json();
-        // return response;
       }
       throw new Error(response.statusText);
     })
@@ -195,8 +141,6 @@ function getReleaseGroupsFromArtistID(artistID) {
       console.log(responseJson);
       STORE.releaseGroupsQueryResponse = responseJson;
       displayReleaseGroupsList();
-      // ** handlers to go in watchFrom()
-      handleSelectReleaseGroup()
       // getTracksFromAlbumID();
     })
     .catch(err => {
@@ -213,14 +157,27 @@ function displayReleaseGroupsList() {
   // populate list of albums to choose from 
   for (let i = 0; i < albums.length; i++) {
     console.log(i + ' ' + albums[i].title);
+    $(".albums-list").append(
+      `<li>
+      <p id=${albums[i].id}>
+      ${albums[i].title}
+      </p>
+      </li>`
+    );
   }
 }
 
 
 function handleSelectReleaseGroup() {
-  getReleasesFromReleaseGroupID("72d15666-99a7-321e-b1f3-a3f8c09dff9f");
+  $('.albums-list').on('click',function(event) {
+    event.preventDefault();
+    // grab the element that was clicked
+    console.log('event target: clicked',$(event.target).attr('id'))
+    getReleasesFromReleaseGroupID($(event.target).attr('id'));
+    $('.albums-list').addClass('hidden')
+  })
+  // getReleasesFromReleaseGroupID("72d15666-99a7-321e-b1f3-a3f8c09dff9f");
 }
-
 
 
 function getReleasesFromReleaseGroupID(releaseGroupID) {
@@ -229,7 +186,6 @@ function getReleasesFromReleaseGroupID(releaseGroupID) {
   const recordingID = ``
   const type = ``
 
-  const baseURL = `https://musicbrainz.org/ws/2/`
 
   const url = `http://musicbrainz.org/ws/2/release-group/${releaseGroupID}?inc=releases&fmt=json`
 
@@ -240,7 +196,6 @@ function getReleasesFromReleaseGroupID(releaseGroupID) {
       if (response.ok) {
         console.log(response);
         return response.json();
-        // return response;
       }
       throw new Error(response.statusText);
     })
@@ -273,7 +228,6 @@ function getTracksFromReleaseID(releaseID) {
   const recordingID = ``
   const type = `release`
 
-  const baseURL = `https://musicbrainz.org/ws/2/`
 
 
     // const url = `${baseURL}${type}/?inc=&fmt=json`
@@ -297,14 +251,11 @@ function getTracksFromReleaseID(releaseID) {
       console.log(responseJson);
       STORE.tracksQueryResponse = responseJson;
       // displayTracksList();
-
       // ** have to move this into handleChooseArtist function later
       // displayTracksList("b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d");
 
       displayTracksList();
-      handleSelectTrack();
     })
-
     .catch(err => {
       $("#js-error-message").text(`Something went wrong: ${err.message}`);
     });
@@ -317,18 +268,66 @@ function getTracksFromReleaseID(releaseID) {
 function displayTracksList() {
   const tracks = STORE.tracksQueryResponse["media"];
   console.log(tracks)
-  // populate list of albums to choose from 
-  for (let i = 0; i < tracks[0].tracks.length; i++) {
-    console.log(i + ' ' + tracks[0].tracks[i].title);
-  }
+
+    // populate list of tracks to choose from 
+    for (let i = 0; i < tracks[0].tracks.length; i++) {
+      console.log(i + ' ' + tracks[0].tracks[i].title);
+      $(".tracks-list").append(
+        `<li>
+        <p>${tracks[0].tracks[i].title}</p>
+        </li>`
+      );
+    }
 }
 
 function handleSelectTrack() {
-  getYouTubeVideos("I'm Only Sleeping");
+
+  $('.tracks-list').on('click',function(event) {
+    event.preventDefault();
+    // grab the element that was clicked
+    const trackClicked = $(event.target).text();
+    console.log('event target: clicked',$(event.target).text())
+    // console.log(typeof $(event.target).text())
+    getYouTubeVideos($(event.target).text());
+    $('.tracks-list').addClass('hidden')
+    
+    console.log('handleSelectTrack() done')
+
+  })
 }
 
-function getYouTubeVideos(trackTitle,maxResults,order) {
-  console.log("order ", order);
+function formatQueryParams(params) {
+  const queryItems = Object.keys(params).map(
+    key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+  );
+  console.log("queryItems ", queryItems);
+  return queryItems.join("&");
+}
+
+function displayResults(responseJson) {
+  // if there are previous results, remove them
+  console.log('from displayResults() ',responseJson);
+  $(".videos-list").empty();
+  // iterate through the items array
+  console.log('from displayResults() ',responseJson.items.length);
+
+  for (let i = 0; i < responseJson.items.length; i++) {
+    $(".videos-list").append(
+      `<li><h3>${responseJson.items[i].snippet.title}</h3>
+      <p>${responseJson.items[i].snippet.description}</p>
+      <a href="https://www.youtube.com/watch?v=${responseJson.items[i].id.videoId}"  target="_blank">
+      <img src='${responseJson.items[i].snippet.thumbnails.medium.url}'>
+      </a>
+      </li>`
+    );
+  }
+  //display the results section
+  $("#results").removeClass("hidden");
+}
+
+
+function getYouTubeVideos(trackTitle) {
+  // console.log("order ", order);
   const params = {
     key: apiKey,
     q: `${trackTitle} guitar lesson`,
@@ -340,9 +339,7 @@ function getYouTubeVideos(trackTitle,maxResults,order) {
   };
   const queryString = formatQueryParams(params);
   const url = searchURL + "?" + queryString;
-
   console.log(url);
-
   fetch(url)
     .then(response => {
       if (response.ok) {
@@ -356,35 +353,36 @@ function getYouTubeVideos(trackTitle,maxResults,order) {
     });
 }
 
+function watchForm() {
+  $("form").submit(event => {
+    event.preventDefault();
+    const artist = $('#js-search-term').val();
+    console.log(artist)
+    getArtistListFromQuery(encodeURIComponent(artist));
+    console.log(encodeURIComponent(artist))
+  });
+  handleSelectArtist();
+  handleSelectReleaseGroup();
+  handleSelectTrack();
+}
+
+$(watchForm);
 
 
-// getYouTubeVideos(
-//   `I'm only sleeping guitar lesson`,
-//   `1`,
-//   order,
-//   fromYear,
-//   fromMonth,
-//   fromDay,
-//   fromHour,
-//   toYear,
-//   toMonth,
-//   toDay,
-//   toHour
-// );
 
-// console.log(
-//   getYouTubeVideos(
-//     `I'm only sleeping guitar lesson`,
-//     `1`,
-//     order,
-//     fromYear,
-//     fromMonth,
-//     fromDay,
-//     fromHour,
-//     toYear,
-//     toMonth,
-//     toDay,
-//     toHour
-//   ))
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
