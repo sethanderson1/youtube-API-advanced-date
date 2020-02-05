@@ -87,15 +87,33 @@ function resetAll() {
   STORE.videosPrevPageNumber= null
 }
 
-function makeOffsetArtist(pageNum) {
+function makeOffsetArtists(pageNum) {
   return (pageNum - 1) * STORE.artistResultsPerPage
 }
 
-function getNextPage() {
+function makeOffsetAlbums(pageNum) {
+  return (pageNum - 1) * STORE.albumsResultsPerPage
+}
+
+function getNextPageArtists() {
+  console.log('STORE.artistQueryResponse(): ',STORE.artistQueryResponse)
   const itemCount = !STORE.artistQueryResponse ? 0 : STORE.artistQueryResponse.count
   const pageCount = Math.ceil(itemCount / STORE.artistResultsPerPage)
-  if (pageCount > STORE.artistCurrentPageNumber) {
+  console.log('pageCount ', pageCount)
+  if (STORE.artistCurrentPageNumber < pageCount) {
     return STORE.artistCurrentPageNumber + 1
+  }
+  return null
+}
+
+
+// *** do below one like above one
+function getNextPageAlbums() {
+  console.log('STORE.releaseGroupsQueryResponse ',STORE.releaseGroupsQueryResponse)
+  const itemCount = !STORE.releaseGroupsQueryResponse ? 0 : STORE.releaseGroupsQueryResponse.count
+  const pageCount = Math.ceil(itemCount / STORE.releaseGroupsResultsPerPage)
+  if (STORE.releaseGroupsCurrentPageNumber < pageCount) {
+    return STORE.releaseGroupsCurrentPageNumber + 1
   }
   return null
 }
@@ -271,10 +289,9 @@ function displayVideoResults(responseJson) {
 
 function getArtistListFromQuery() {
   const artist = STORE.artistQuery
-  let offset = makeOffsetArtist(STORE.artistCurrentPageNumber)
+  let offset = makeOffsetArtists(STORE.artistCurrentPageNumber)
   let url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json&offset=${offset}&limit=${STORE.artistResultsPerPage}`;
   console.log("query artist url ", url);
-
   fetch(url)
     .then(response => {
       if (response.ok) {
@@ -286,17 +303,17 @@ function getArtistListFromQuery() {
     .then(responseJson => {
       console.log(responseJson);
       STORE.artistQueryResponse = responseJson;
-      const nextPage = getNextPage()
+      const nextPage = getNextPageArtists()
       console.log('next page:', nextPage)
       STORE.artistNextPageNumber = null
       if (nextPage) {
-        // offset = makeOffsetArtist(nextPage)
+        // offset = makeOffsetArtists(nextPage)
         // url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json&offset=${offset}`;    
         STORE.artistNextPageNumber = nextPage
       }
       STORE.artistPrevPageNumber = null
       if (STORE.artistCurrentPageNumber > 1) {
-        // offset = makeOffsetArtist(STORE.artistCurrentPageNumber-1)
+        // offset = makeOffsetArtists(STORE.artistCurrentPageNumber-1)
         // url = `https://musicbrainz.org/ws/2/artist/?query=artist:${artist}&fmt=json&offset=${offset}`;    
         STORE.artistPrevPageNumber = STORE.artistCurrentPageNumber - 1
       }
@@ -309,8 +326,13 @@ function getArtistListFromQuery() {
 }
 
 function getReleaseGroupsFromArtistID(artistID) {
-  const url = `https://musicbrainz.org/ws/2/artist/${artistID}?inc=release-groups&fmt=json`
-  console.log("query release groups url ", url);
+  const albums = STORE.albumsQuery
+  let offset = makeOffsetArtists(STORE.artistCurrentPageNumber)
+  offset = '0' // to test 
+  // const url = `https://musicbrainz.org/ws/2/artist/${artistID}?inc=release-groups&offset=${offset}&limit=${STORE.artistResultsPerPage}&fmt=json`
+  // const url = `https://musicbrainz.org/ws/2/artist/?query=arid:${artistID}?inc=release-groups&offset=${offset}&limit=${STORE.artistResultsPerPage}&fmt=json`
+    const url = `https://musicbrainz.org/ws/2/artist/${artistID}?inc=release-groups&limit=1&fmt=json`
+console.log("query release groups url ", url);
   fetch(url)
     .then(response => {
       if (response.ok) {
@@ -320,8 +342,14 @@ function getReleaseGroupsFromArtistID(artistID) {
       throw new Error(response.statusText);
     })
     .then(responseJson => {
-      console.log(responseJson);
       STORE.releaseGroupsQueryResponse = responseJson;
+      console.log('STORE.releaseGroupsQueryResponse ',STORE.releaseGroupsQueryResponse);
+      // ********* this goddamn response doesnt have the offset or count in it??
+      // ********* will have to investigate. or maybe say fuck it and 100 will be max and no more pages
+      // ********* also look at postman and links on chrome
+      const nextPage = getNextPageAlbums();
+
+      console.log('testtest')
       displayReleaseGroupsList();
     })
     .catch(err => {
