@@ -29,25 +29,36 @@
             </div>
         </form>
         <!-- <p id="js-error-message" class="error-message"></p> -->
-        
+
+
         <section id="results" class="hidden">
             <h2>Search results</h2>
-            <div class="artists" >
-                <ul class="artists-list"></ul>
-                <nav class="artists-nav" ></nav>
-            </div>
-            <div class="albums" >
-                <ul class="albums-list"></ul>
-            </div>
-            <div class="tracks" >
-                <ul class="tracks-list"></ul>
-            </div>
-            <div class="youtube-videos" >
-                <ul class="videos-list"></ul>
-            </div>
-
-            
+            <section class="artists-page results-page">
+                <div class="artists">
+                    <ul class="artists-list list"></ul>
+                    <nav class="artists-list-nav"></nav>
+                </div>
+            </section>
+            <section class="albums-page results-page">
+                <div class="albums">
+                    <ul class="albums-list list"></ul>
+                    <nav class="albums-list-nav"></nav>
+                </div>
+            </section>
+            <section class="tracks-page results-page">
+                <div class="tracks">
+                    <ul class="tracks-list list"></ul>
+                    <nav class="tracks-list-nav"></nav>
+                </div>
+            </section>
+            <section class="youtube-page results-page">
+                <div class="youtube-videos">
+                    <ul class="videos-list list"></ul>
+                    <nav class="videos-list-nav"></nav>
+                </div>
+            </section>
         </section>
+
 
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.js"
