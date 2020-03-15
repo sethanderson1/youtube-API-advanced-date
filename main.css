@@ -131,10 +131,13 @@ input[text="radio"] {
 
 .vert-middle {
   vertical-align: middle;
+  padding: 0;
 }
 
 
-
+.sort-by-wrapper {
+  margin:0;
+}
 
 
 .max-results-label {
